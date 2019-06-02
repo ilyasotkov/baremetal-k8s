@@ -31,7 +31,7 @@ sudo passwd root
 sudo sed -i 's/prohibit-password/yes/' /etc/ssh/sshd_config
 ```
 ```sh
-service sshd restart
+sudo service sshd restart
 ```
 
 ## 3. Using Terraform to set everything up
