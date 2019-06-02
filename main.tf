@@ -37,7 +37,8 @@ resource "null_resource" "init" {
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get update -q"
+      "apt-get update -q",
+      "apt-get install -yq ufw"
     ]
   }
 }
