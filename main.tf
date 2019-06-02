@@ -12,6 +12,11 @@ variable "ssh_password" {
   type = string
 }
 
+variable "apt_packages" {
+  type    = list
+  default = []
+}
+
 variable "connections" {
   type = list
   default = [
@@ -38,7 +43,7 @@ resource "null_resource" "init" {
   provisioner "remote-exec" {
     inline = [
       "apt-get update -q",
-      "apt-get install -yq ufw"
+      "apt-get install -yq ufw ${join(" ", var.apt_packages)}"
     ]
   }
 }
