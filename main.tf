@@ -16,7 +16,8 @@ variable "connections" {
   type = list
   default = [
     "192.168.10.48",
-    "192.168.10.51"
+    "192.168.10.51",
+    "192.168.10.63"
   ]
 }
 
@@ -36,7 +37,7 @@ resource "null_resource" "init" {
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get update"
+      "apt-get update -q"
     ]
   }
 }
