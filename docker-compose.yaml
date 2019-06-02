@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  tf:
+    build: .
+    working_dir: /tf
+    volumes:
+    - .:/tf
+    - .terraformrc:/root/.terraformrc
