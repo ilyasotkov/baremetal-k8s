@@ -1,6 +1,8 @@
 # Kubernetes Baremetal Lab
 
-Let's build a cheap home data center (based on x86-64) and run Kubernetes on it
+![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-001.jpeg)
+
+*Let's build a cheap home data center (based on x86-64) and run Kubernetes on it!*
 
 Initial targets for this project:
 
@@ -22,8 +24,6 @@ As a starting point, I bought three of these machines for 35 € each. Since the
 - CPU: 3x AMD Dual-Core 1.65 GHz T56N APU with Radeon HD 6320 Graphics
 - RAM: 14 GB DDR3 1333Mhz (6 GB + 4 GB + 4 GB)
 - Storage: 16+16+4+20+20+20 GB = 96 GB worth of SSDs
-
-(Should add a photo of the setup here)
 
 ## 2. Initial (manual) hardware setup
 
