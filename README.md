@@ -1,5 +1,18 @@
 # Kubernetes Baremetal Lab
 
+Let's build a cheap home data center (based on x86-64) and run Kubernetes on it
+
+Initial targets for this project:
+
+- Build a home data center (private cloud) for under 200 €
+- Create a POC solution for hosting apps (with dynamic DNS since my ISP doesn't provide static IP addresses for non-corporate customers)
+- Experiment with various tools and technologies, including
+    - Terraform 0.12 & Terraform Enterprise Free Tier
+    - Linux and various distributions (Ubuntu, CoreOS, RancherOS)
+    - kubeadm
+    - Kubernetes 1.14
+    - Helm 3
+
 ## 1. Buying hardware
 
 I'll be using [HP t610 Flexible Thin Client ](https://support.hp.com/si-en/document/c03235347) machines for my cluster setup. These mini-PCs are based on x86-64 architecture and are widely available, cheap, completely silent (with passive cooling and SSDs), and power-efficient.
@@ -35,3 +48,5 @@ sudo service sshd restart
 ```
 
 ## 3. Using Terraform to set everything up
+
+...
