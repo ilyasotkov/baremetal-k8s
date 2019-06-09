@@ -1,9 +1,10 @@
 all:
   children:
-    masters:
+    nodes:
       hosts:
         192.168.10.48:
         192.168.10.51:
+        192.168.10.63:
       vars:
         ansible_ssh_user: ubuntu
         ansible_ssh_pass: !vault |
