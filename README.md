@@ -49,4 +49,7 @@ sudo service sshd restart
 
 ## 3. Using Terraform to set everything up
 
+```sh
+ansible-vault encrypt_string $(echo -n "mys3cr3tp455w0rd")
+```
 ...

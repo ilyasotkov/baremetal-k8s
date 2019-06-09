@@ -17,17 +17,17 @@ variable "apt_packages" {
   default = []
 }
 
-variable "connections" {
+variable "hosts" {
   type = list
   default = [
     "192.168.10.48",
     "192.168.10.51",
-    "192.168.10.63"
+    # "192.168.10.63"
   ]
 }
 
 resource "null_resource" "init" {
-  count = length(var.connections)
+  count = length(var.hosts)
 
   triggers = {
     always = uuid()
@@ -35,15 +35,23 @@ resource "null_resource" "init" {
 
   connection {
     type     = "ssh"
-    host     = element(var.connections, count.index)
+    host     = element(var.hosts, count.index)
     user     = "root"
     password = var.ssh_password
   }
 
   provisioner "remote-exec" {
     inline = [
-      "apt-get update -q",
-      "apt-get install -yq ufw ${join(" ", var.apt_packages)}"
+      "apt-get --version",
+      # "apt-get update -q",
+      # "apt-get install -yq ufw ${join(" ", var.apt_packages)}"
     ]
+  }
+
+  provisioner "local-exec" {
+    # -i "${element(var.connections, count.index)},"
+    command = <<EOT
+ansible-playbook -l "${element(var.hosts, count.index)}," -vv bootstrap.yml
+EOT
   }
 }

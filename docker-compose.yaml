@@ -1,9 +1,17 @@
 version: "3.7"
 
 services:
-  tf:
+  container:
     build: .
-    working_dir: /tf
+    working_dir: /container
+    build:
+      context: .
+      args:
+        - ANSIBLE_VAULT_PASSWORD
+    environment:
+      - TF_VAR_ssh_password
+      - ANSIBLE_VAULT_PASSWORD
+      - REGISTRY_PASSWORD
     volumes:
-    - .:/tf
+    - .:/container
     - .terraformrc:/root/.terraformrc

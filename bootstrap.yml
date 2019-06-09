@@ -1,0 +1,8 @@
+---
+- name: Bootstrap the master node.
+  hosts: masters
+  gather_facts: no
+  pre_tasks:
+    - raw: sudo apt-get -yq install python-minimal  
+  roles:
+    - bootstrap
