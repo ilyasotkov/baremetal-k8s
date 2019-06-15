@@ -26,7 +26,7 @@ variable "hosts" {
   ]
 }
 
-resource "null_resource" "init" {
+resource "null_resource" "nodes" {
   count = length(var.hosts)
 
   triggers = {
@@ -49,7 +49,6 @@ resource "null_resource" "init" {
   }
 
   provisioner "local-exec" {
-    # -i "${element(var.connections, count.index)},"
     command = <<EOT
 ansible-playbook -l "${element(var.hosts, count.index)}," -vv bootstrap.yml
 EOT
