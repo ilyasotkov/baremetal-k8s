@@ -40,10 +40,33 @@ I used [balenaEtcher](https://github.com/balena-io/etcher) to create a bootable 
 
 ### 3. Kubernetes cluster setup
 
-We'll use **kubespray** to create a Kubernetes cluster from our Ubuntu nodes. I cloned the latest release of kubespray and removed all files and directories that we won't be using (except that I left the `roles` directory intact).
+We'll use kubespray to create a Kubernetes cluster from our Ubuntu nodes. I cloned the latest release of kubespray and removed all files and directories that we won't be using (except that I left the `roles` directory intact).
+
+(describe changes to default variables)
 
 ```sh
 dc build && dc run --rm controller ansible-playbook -v cluster.yml
 ```
 
 *...to be continued...*
+
+### 4. Access the Kubernetes Dashboard
+
+1. Create a service account and cluster role binding for the dashboard:
+    ```sh
+    docker-compose run --rm controller bash
+    ```
+    ```sh
+    kubectl apply -f hack/dashboard.yaml
+    ```
+2. Get the token to sign in to the dashboard:
+    ```sh
+    kubectl -n kube-system describe secret \
+        $(kubectl -n kube-system get secret | grep admin-user | awk '{print $1}')
+    ```
+3. From the controller host (not Docker container):
+```sh
+docker-compose up -d
+```
+
+4. Go to https://localhost:9443

@@ -6,11 +6,13 @@ services:
     working_dir: /baremetal-k8s
     build:
       context: .
-      args:
-      - ANSIBLE_VAULT_PASSWORD
     environment:
     - ANSIBLE_VAULT_PASSWORD
     - REGISTRY_PASSWORD
+    - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
+    ports:
+    - 9443:443
     volumes:
     - .:/baremetal-k8s
     - .terraformrc:/root/.terraformrc
+    command:  kubectl -n kube-system port-forward svc/kubernetes-dashboard 443:443 --address=0.0.0.0
