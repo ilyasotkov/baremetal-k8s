@@ -1,8 +1,6 @@
 # Kubernetes Baremetal Lab
 
-```sh
-dc build && dc run --rm controller ansible-playbook -v cluster.yml
-```
+> ⚠️ This is a work in progress ⚠️
 
 ![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-001.jpeg)
 
@@ -51,3 +49,11 @@ sudo sed -i 's/prohibit-password/yes/' /etc/ssh/sshd_config
 ```sh
 sudo service sshd restart
 ```
+
+### 3. Kubernetes cluster setup
+
+```sh
+dc build && dc run --rm controller ansible-playbook -v cluster.yml
+```
+
+*...to be continued...*
