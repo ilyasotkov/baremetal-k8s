@@ -16,14 +16,26 @@ spec:
         app.kubernetes.io/name: {{ include "nginx-app.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Equal
+        effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+          - name: http
+            containerPort: 80
+            hostPort: 80
+            protocol: TCP
           livenessProbe:
             httpGet:
               path: /
