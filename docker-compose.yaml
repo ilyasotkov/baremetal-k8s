@@ -12,7 +12,9 @@ services:
     - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
     ports:
     - 9443:443
+    - 8980:80
     volumes:
     - .:/baremetal-k8s
     - .terraformrc:/root/.terraformrc
-    command:  kubectl -n kube-system port-forward svc/kubernetes-dashboard 443:443 --address=0.0.0.0
+    command: kubectl -n kube-system port-forward svc/kubernetes-dashboard 443:443 --address=0.0.0.0
+    # command: kubectl port-forward svc/nginx-app 80:80 --address=0.0.0.0

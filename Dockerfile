@@ -28,8 +28,18 @@ RUN curl -o ./terraform.zip \
         && mv terraform /usr/bin \
         && rm -rf terraform.zip
 
-RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.14.3/bin/linux/amd64/kubectl \
-    && chmod a+x kubectl && cp kubectl /usr/local/bin/kubectl
+ENV KUBECTL_VERSION 1.14.3
+RUN curl -LO \
+        https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl \
+        && chmod a+x kubectl && cp kubectl /usr/local/bin/kubectl
+
+ENV HELM_VERSION 3.0.0-alpha.1
+RUN curl -L -o helm.tar.gz \
+        https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz \
+        && tar -xvzf helm.tar.gz \
+        && rm -rf helm.tar.gz \
+        && chmod 0700 linux-amd64/helm \
+        && mv linux-amd64/helm /usr/bin
 
 COPY ./docker-entrypoint.sh /usr/bin/
 COPY . .
