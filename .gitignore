@@ -1,3 +1,4 @@
 .hidden/
 .terraformrc
 .terraform/
+credentials/
