@@ -15,6 +15,7 @@ Initial targets for this project:
 - Experiment with various tools and technologies, including
     - Terraform 0.12 & Terraform Enterprise Free Tier
     - Linux and various distributions (Ubuntu, CoreOS, RancherOS)
+    - kubepsray and Ansible
     - kubeadm
     - Kubernetes 1.14
     - Helm 3
@@ -50,10 +51,3 @@ sudo sed -i 's/prohibit-password/yes/' /etc/ssh/sshd_config
 ```sh
 sudo service sshd restart
 ```
-
-## 3. Using Terraform to set everything up
-
-```sh
-ansible-vault encrypt_string $(echo -n "mys3cr3tp455w0rd")
-```
-...
