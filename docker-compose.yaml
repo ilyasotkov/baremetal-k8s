@@ -1,7 +1,7 @@
 version: "3.7"
 
 services:
-  container:
+  controller:
     build: .
     working_dir: /baremetal-k8s
     build:

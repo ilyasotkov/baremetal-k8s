@@ -1,7 +1,7 @@
 # Kubernetes Baremetal Lab
 
 ```sh
-dc build && dc run --rm container ansible-playbook -v cluster.yml
+dc build && dc run --rm controller ansible-playbook -v cluster.yml
 ```
 
 ![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-001.jpeg)
