@@ -1,5 +1,9 @@
 # Kubernetes Baremetal Lab
 
+```sh
+dc build && dc run --rm container ansible-playbook -v cluster.yml
+```
+
 ![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-001.jpeg)
 
 *Let's build a cheap home data center (based on x86-64) and run Kubernetes on it!*

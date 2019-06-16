@@ -8,9 +8,9 @@ terraform {
   }
 }
 
-variable "ssh_password" {
-  type = string
-}
+# variable "ssh_password" {
+#   type = string
+# }
 
 variable "apt_packages" {
   type    = list
@@ -32,25 +32,25 @@ resource "null_resource" "nodes" {
   triggers = {
     always = uuid()
   }
-
-  connection {
-    type     = "ssh"
-    host     = element(var.hosts, count.index)
-    user     = "root"
-    password = var.ssh_password
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "apt-get --version",
-      # "apt-get update -q",
-      # "apt-get install -yq ufw ${join(" ", var.apt_packages)}"
-    ]
-  }
+  #
+  # connection {
+  #   type     = "ssh"
+  #   host     = element(var.hosts, count.index)
+  #   user     = "root"
+  #   password = var.ssh_password
+  # }
+  #
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "apt-get --version",
+  #     # "apt-get update -q",
+  #     # "apt-get install -yq ufw ${join(" ", var.apt_packages)}"
+  #   ]
+  # }
 
   provisioner "local-exec" {
     command = <<EOT
-ansible-playbook -l "${element(var.hosts, count.index)}," -vv bootstrap.yml
+ansible-playbook -l "${element(var.hosts, count.index)}," -vv cluster.yml
 EOT
   }
 }

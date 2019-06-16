@@ -1,0 +1,12 @@
+---
+- name: Kubernetes Apps | Delete kubeadm CoreDNS
+  kube:
+    name: "coredns"
+    namespace: "kube-system"
+    kubectl: "{{ bin_dir }}/kubectl"
+    resource: "deploy"
+    state: absent
+  when:
+    - kubeadm_init is defined
+    - kubeadm_init.changed|default(false)
+    - inventory_hostname == groups['kube-master'][0]

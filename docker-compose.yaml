@@ -3,15 +3,14 @@ version: "3.7"
 services:
   container:
     build: .
-    working_dir: /container
+    working_dir: /baremetal-k8s
     build:
       context: .
       args:
       - ANSIBLE_VAULT_PASSWORD
     environment:
-    - TF_VAR_ssh_password
     - ANSIBLE_VAULT_PASSWORD
     - REGISTRY_PASSWORD
     volumes:
-    - .:/container
+    - .:/baremetal-k8s
     - .terraformrc:/root/.terraformrc

@@ -1,0 +1,10 @@
+---
+# OpenSUSE ships with Python installed
+
+# Without this package, the get_url module fails when trying to handle https
+- name: Install python-cryptography
+  zypper:
+    name: python-cryptography
+    state: present
+    update_cache: true
+  become: true

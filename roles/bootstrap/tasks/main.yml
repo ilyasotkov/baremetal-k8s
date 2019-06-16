@@ -1,5 +1,0 @@
-- name: Run an informative command
-  block:
-    - shell: "ifconfig"
-    - debug:
-        msg: System {{ inventory_hostname }}
