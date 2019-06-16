@@ -70,3 +70,28 @@ docker-compose up -d
 ```
 
 4. Go to https://localhost:9443
+
+## Troubleshooting
+
+### How to setup kubeconfig file on master node
+
+```sh
+sudo cp /etc/kubernetes/admin.conf $HOME/ \
+    && sudo chown $(id -u):$(id -g) $HOME/admin.conf \
+    && export KUBECONFIG=$HOME/admin.conf
+```
+
+From https://github.com/kubernetes-sigs/kubespray/issues/1615#issuecomment-453118963
+
+*TODO: Automatically copy kubeconfig file to a local directory after `cluster.yml`*
+
+### Kubernetes master NotReady after reboot
+
+Bad unproven solution: flush iptables
+
+(must investigate further how to handle hard reboot of the master)
+
+```sh
+dc build && dc run --rm controller ansible-playbook -v reset.yml --tag iptables -l master-node
+```
+From: https://github.com/kubernetes-sigs/kubespray/issues/2348
