@@ -36,21 +36,11 @@ The first thing I did was download the newest version of BIOS from https://suppo
 
 ### 2.2. Host OS
 
-I used [balenaEtcher](https://github.com/balena-io/etcher) to create a bootable USB drive with Ubuntu Server 16.04, then manually went through the install process. *(Note: this should be automated)*
-
-After the installation, I ran the following commands in order to enable Terraform to do the rest of provisioning as a `root` user:
-
-```sh
-sudo passwd root
-```
-```sh
-sudo sed -i 's/prohibit-password/yes/' /etc/ssh/sshd_config
-```
-```sh
-sudo service sshd restart
-```
+I used [balenaEtcher](https://github.com/balena-io/etcher) to create a bootable USB drive with Ubuntu Server 16.04, then manually went through the install process. *(Note: this could and should be automated)*
 
 ### 3. Kubernetes cluster setup
+
+We'll use **kubespray** to create a Kubernetes cluster from our Ubuntu nodes. I cloned the latest release of kubespray and removed all files and directories that we won't be using (except that I left the `roles` directory intact).
 
 ```sh
 dc build && dc run --rm controller ansible-playbook -v cluster.yml
