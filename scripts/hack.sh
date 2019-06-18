@@ -6,7 +6,10 @@ cd $(dirname $0)/..
 helm init
 
 helm upgrade --install --force \
-metallb stable/metallb \
---values ./hack/metallb/values.yaml
+nginx-app ./hack/helm/nginx-app
 
-kubectl apply -f ./hack/metallb-demo-app.yaml
+helm upgrade --install --force \
+metallb stable/metallb \
+--values ./hack/helm/metallb/values.yaml
+
+kubectl apply -f ./hack/raw/
