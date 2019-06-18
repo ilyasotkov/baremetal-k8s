@@ -15,7 +15,8 @@ RUN apt update -y \
                 software-properties-common \
                 python-pip \
                 rsync \
-                unzip
+                unzip \
+                git
 
 COPY ./requirements.txt .
 RUN /usr/bin/python -m pip install pip -U \
