@@ -42,5 +42,11 @@ RUN curl -L -o helm.tar.gz \
         && chmod 0700 linux-amd64/helm \
         && mv linux-amd64/helm /usr/bin
 
+ENV HELMFILE_VERSION 0.79.0
+RUN curl -L -o helmfile \
+        https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
+        && chmod 0700 helmfile \
+        && mv helmfile /usr/bin
+
 COPY ./docker-entrypoint.sh /usr/bin/
 COPY . .

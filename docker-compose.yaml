@@ -9,6 +9,7 @@ services:
     - REGISTRY_PASSWORD
     - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
     volumes:
+    - ./.helm:/root/.helm
     - .:/baremetal-k8s
     - .terraformrc:/root/.terraformrc
 

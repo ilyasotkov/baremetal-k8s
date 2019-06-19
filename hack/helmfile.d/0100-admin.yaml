@@ -1,0 +1,59 @@
+helmDefaults:
+  wait: true
+  force: true
+  recreatePods: true
+
+repositories:
+- name: stable
+  url: https://kubernetes-charts.storage.googleapis.com
+- name: incubator
+  url: https://kubernetes-charts-incubator.storage.googleapis.com
+
+releases:
+- name: namespaces
+  namespace: kube-system
+  labels:
+    app: namespaces
+  chart: incubator/raw
+  version: 0.1.0
+  values:
+  - resources:
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: monitoring
+
+- name: metrics-server
+  namespace: kube-system
+  labels:
+    app: metrics-server
+  chart: stable/metrics-server
+  version: 1.1.0
+  values:
+  - resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+
+- name: metallb
+  namespace: default
+  chart: stable/metallb
+  labels:
+    app: metallb
+  version: 0.9.6
+  values:
+  - configInline:
+      address-pools:
+      - name: default
+        protocol: layer2
+        addresses:
+        - 192.168.10.100-192.168.10.150
+
+- name: prometheus-operator
+  namespace: monitoring
+  labels:
+    app: prometheus-operator
+  chart: stable/prometheus-operator
+  version: 5.12.3
+  values:
+  - fullnameOverride: prometheus-operator
