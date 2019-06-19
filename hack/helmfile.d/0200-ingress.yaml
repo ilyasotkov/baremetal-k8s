@@ -1,0 +1,35 @@
+bases:
+- 0000-chart-repos.yaml
+
+releases:
+- name: nginx-ingress
+  namespace: kube-system
+  labels:
+    app: nginx-ingress
+  chart: stable/nginx-ingress
+  version: 1.6.18
+  values:
+  - rbac:
+      create: true
+    controller:
+      stats:
+        enabled: true
+      metrics:
+        enabled: true
+      config:
+        server-tokens: "false"
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 5
+        targetCPUUtilizationPercentage: 70
+        targetMemoryUtilizationPercentage: 70
+      resources:
+        requests:
+          cpu: 64m
+          memory: 128Mi
+        limits:
+          cpu: 100m
+          memory: 256Mi
+      publishService:
+        enabled: true

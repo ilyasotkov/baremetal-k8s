@@ -1,13 +1,10 @@
+bases:
+- 0000-chart-repos.yaml
+
 helmDefaults:
   wait: true
   force: true
   recreatePods: true
-
-repositories:
-- name: stable
-  url: https://kubernetes-charts.storage.googleapis.com
-- name: incubator
-  url: https://kubernetes-charts-incubator.storage.googleapis.com
 
 releases:
 - name: namespaces
@@ -28,9 +25,10 @@ releases:
   labels:
     app: metrics-server
   chart: stable/metrics-server
-  version: 1.1.0
+  version: 2.8.2
   values:
-  - resources:
+  - args: ["--kubelet-insecure-tls"]
+    resources:
       requests:
         cpu: 50m
         memory: 64Mi
