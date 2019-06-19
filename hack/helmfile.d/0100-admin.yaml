@@ -36,7 +36,7 @@ releases:
         memory: 64Mi
 
 - name: metallb
-  namespace: default
+  namespace: kube-system
   chart: stable/metallb
   labels:
     app: metallb
