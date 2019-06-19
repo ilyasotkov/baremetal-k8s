@@ -27,7 +27,9 @@ releases:
   chart: stable/metrics-server
   version: 2.8.2
   values:
-  - args: ["--kubelet-insecure-tls"]
+  - args:
+    - --kubelet-insecure-tls
+    - --kubelet-preferred-address-types=InternalIP
     resources:
       requests:
         cpu: 50m
