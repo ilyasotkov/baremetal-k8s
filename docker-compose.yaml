@@ -4,17 +4,30 @@ services:
   controller:
     build: .
     working_dir: /baremetal-k8s
-    build:
-      context: .
     environment:
     - ANSIBLE_VAULT_PASSWORD
     - REGISTRY_PASSWORD
     - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
-    ports:
-    - 9443:443
-    - 8980:80
     volumes:
     - .:/baremetal-k8s
     - .terraformrc:/root/.terraformrc
-    command: kubectl -n kube-system port-forward svc/kubernetes-dashboard 443:443 --address=0.0.0.0
-    # command: kubectl port-forward svc/nginx-app 80:80 --address=0.0.0.0
+
+  dashboard:
+    image: bitnami/kubectl:1.14.3
+    environment:
+    - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
+    volumes:
+    - .:/baremetal-k8s
+    ports:
+    - 9443:9443
+    command: -n kube-system port-forward svc/kubernetes-dashboard 9443:443 --address=0.0.0.0
+
+  grafana:
+    image: bitnami/kubectl:1.14.3
+    environment:
+    - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
+    volumes:
+    - .:/baremetal-k8s
+    ports:
+    - 8088:8088
+    command: -n monitoring port-forward svc/prometheus-operator-grafana 8088:80 --address=0.0.0.0
