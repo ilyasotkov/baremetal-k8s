@@ -1,0 +1,38 @@
+bases:
+- _base.yaml
+
+releases:
+- name: task-pv-claim
+  namespace: kube-system
+  labels:
+    app: task-pv-claim
+  chart: incubator/raw
+  wait: false
+  values:
+  - resources:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: task-pv-claim
+      spec:
+        storageClassName: rook-ceph-block
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 3Gi
+
+- name: fission
+  installed: false
+  namespace: kube-system
+  labels:
+    app: fission
+  chart: fission/fission-all
+  values:
+  - nats:
+      enabled: false
+    persistence:
+      enabled: true
+      storageClass: rook-ceph-block
+      accessMode: ReadWriteOnce
+      size: 4Gi

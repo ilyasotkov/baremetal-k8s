@@ -1,0 +1,65 @@
+bases:
+- _base.yaml
+
+releases:
+
+- name: ceph-cluster
+  namespace: kube-system
+  labels:
+    app: ceph-cluster
+  chart: incubator/raw
+  values:
+  - resources:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      metadata:
+        name: rook-ceph
+      spec:
+        cephVersion:
+          image: ceph/ceph:v14.2.1-20190430
+        dataDirHostPath: /opt/rook
+        mon:
+          count: 1
+          allowMultiplePerNode: true
+        dashboard:
+          enabled: true
+        storage:
+          useAllNodes: false
+          useAllDevices: false
+          config:
+            databaseSizeMB: "1024"
+            journalSizeMB: "1024"
+          nodes:
+          - name: node00
+            location: rack=rack1
+            devices:
+            - name: sda
+          - name: node01
+            location: rack=rack1
+            devices:
+            - name: sda
+
+- name: ceph-block-storage
+  namespace: kube-system
+  labels:
+    app: ceph-block-storage
+  chart: incubator/raw
+  values:
+  - resources:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephBlockPool
+      metadata:
+        name: replicapool
+      spec:
+        failureDomain: host
+        replicated:
+          size: 1
+    - apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+         name: rook-ceph-block
+      provisioner: ceph.rook.io/block
+      parameters:
+        blockPool: replicapool
+        clusterNamespace: kube-system
+        fstype: ext4

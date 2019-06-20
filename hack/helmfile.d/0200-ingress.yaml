@@ -1,5 +1,5 @@
 bases:
-- 0000-chart-repos.yaml
+- _base.yaml
 
 releases:
 - name: nginx-ingress
