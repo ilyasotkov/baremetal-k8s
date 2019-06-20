@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Ansible Vault Password is for the cluster is stored in macOS Keychain Access
+# Ansible Vault password for the cluster is stored in macOS Keychain
 # Export the environmental variables to your shell by running:
 # `. .environ`
 # Add via:
