@@ -24,13 +24,13 @@ ARG KUBESPRAY_VERSION=2.10.4
 RUN curl -L -o kubespray.tar.gz \
         https://github.com/kubernetes-sigs/kubespray/archive/v${KUBESPRAY_VERSION}.tar.gz \
         && tar -xvzf kubespray.tar.gz \
-        && mv kubespray-${KUBESPRAY_VERSION} kubespray \
-        && rm -rf ./kubespray/ansible.cfg \
-        && cp -r ansible/* kubespray/ \
-        && ls -alh ./kubespray
+        && mv kubespray-${KUBESPRAY_VERSION} /kubespray \
+        && rm -f kubespray.tar.gz \
+        && rm -f /kubespray/ansible.cfg \
+        && cp -r ansible/* /kubespray
 
 RUN /usr/bin/python -m pip install pip -U \
-        && python -m pip install -r ./kubespray/requirements.txt
+        && python -m pip install -r /kubespray/requirements.txt
 
 ARG TERRAFORM_VERSION=0.12.0
 RUN curl -o ./terraform.zip \
