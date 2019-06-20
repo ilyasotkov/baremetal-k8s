@@ -10,8 +10,11 @@ services:
     - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
     volumes:
     - ./.helm:/root/.helm
-    - .:/baremetal-k8s
-    - .terraformrc:/root/.terraformrc
+    - ./ansible/inventory.yml:/baremetal-k8s/kubespray/inventory.yml
+    - ./ansible/group_vars:/baremetal-k8s/kubespray/group_vars
+    - ./ansible/.vault_pass:/baremetal-k8s/kubespray/.vault_pass
+    - ./ansible/ansible.cfg:/baremetal-k8s/kubespray/ansible.cfg
+    - ./terraform/.terraformrc:/root/.terraformrc
 
   dashboard:
     image: bitnami/kubectl:1.14.3

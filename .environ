@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Ansible Vault Password is for the cluster is stored in macOS Keychain Access
+# Export the environmental variables to your shell by running:
+# `. .environ`
+# Add via:
+# `security add-generic-password -a baremetal-k8s-vault-pass -s baremetal-k8s-vault-pass -w <password>`
+
+export ANSIBLE_VAULT_PASSWORD=$(security find-generic-password -a baremetal-k8s-vault-pass -w)
