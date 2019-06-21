@@ -70,13 +70,16 @@ releases:
   version: 1.5.2
   values: []
 
-- name: rook
+- name: rook-ceph
   namespace: kube-system
   labels:
-    app: rook
+    app: rook-ceph
   chart: rook-release/rook-ceph
+  recreatePods: true
+  installed: true
   values:
-  - flexVolumeDirPath: /var/lib/kubelet/volume-plugins
+  - agent:
+      flexVolumeDirPath: /var/lib/kubelet/volume-plugins
     image:
       prefix: rook
       repository: rook/ceph

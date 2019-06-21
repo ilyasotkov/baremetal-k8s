@@ -5,21 +5,22 @@ releases:
   labels:
     app: ceph-cluster
   chart: incubator/raw
+  installed: true
   values:
   - resources:
     - apiVersion: ceph.rook.io/v1
       kind: CephCluster
       metadata:
-        name: rook-ceph
+        name: ceph-cluster
       spec:
         cephVersion:
-          image: ceph/ceph:v14.2.1-20190430
-        dataDirHostPath: /opt/rook
+          image: ceph/ceph:v13.2.6-20190604
+        dataDirHostPath: /var/lib/rook
         mon:
           count: 1
-          allowMultiplePerNode: true
+          allowMultiplePerNode: false
         dashboard:
-          enabled: true
+          enabled: false
         storage:
           useAllNodes: false
           useAllDevices: false
@@ -27,7 +28,7 @@ releases:
             databaseSizeMB: "1024"
             journalSizeMB: "1024"
           nodes:
-          - name: 192.168.10.51
+          - name: master-node
             location: rack=rack1
             devices:
             - name: sda
@@ -37,6 +38,7 @@ releases:
   labels:
     app: ceph-block-storage
   chart: incubator/raw
+  installed: true
   values:
   - resources:
     - apiVersion: ceph.rook.io/v1
@@ -46,7 +48,7 @@ releases:
       spec:
         failureDomain: host
         replicated:
-          size: 1
+          size: 3
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
       metadata:
@@ -57,4 +59,24 @@ releases:
       parameters:
         blockPool: replicapool
         clusterNamespace: kube-system
-        fstype: ext4
+
+- name: task-pv-claim
+  namespace: kube-system
+  labels:
+    app: task-pv-claim
+  chart: incubator/raw
+  installed: true
+  wait: false
+  values:
+  - resources:
+    - kind: PersistentVolumeClaim
+      apiVersion: v1
+      metadata:
+        name: task-pv-claim
+      spec:
+        storageClassName: rook-ceph-block
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 5Gi
