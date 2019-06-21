@@ -18,6 +18,10 @@ releases:
       kind: Namespace
       metadata:
         name: fission
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: logging
 
 - name: metrics-server
   installed: true

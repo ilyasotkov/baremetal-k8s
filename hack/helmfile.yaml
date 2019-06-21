@@ -1,17 +1,2 @@
-helmDefaults:
-  wait: true
-  force: true
-  recreatePods: false
-
-repositories:
-- name: stable
-  url: https://kubernetes-charts.storage.googleapis.com
-- name: incubator
-  url: https://kubernetes-charts-incubator.storage.googleapis.com
-- name: rook-release
-  url: https://charts.rook.io/release
-- name: fission
-  url: https://fission.github.io/fission-charts
-
 helmfiles:
 - ./releases/*.yaml

@@ -1,0 +1,32 @@
+releases:
+
+- name: es-operator
+  installed: true
+  namespace: logging
+  labels:
+    app: es-operator
+  chart: akomljen-charts/elasticsearch-operator
+  values: []
+
+- name: efk
+  installed: true
+  namespace: logging
+  labels:
+    app: efk
+  chart: akomljen-charts/efk
+  values:
+  - elasticsearch:
+      spec:
+        client-java-options: -Xms128m -Xmx128m
+        master-java-options: -Xms512m -Xmx512m
+        data-java-options: -Xms512m -Xmx512m
+        data-volume-size: 7Gi
+        storage:
+          type: rook-ceph-block
+        resources:
+          requests:
+            memory: 1024Mi
+            cpu: 200m
+          limits:
+            memory: 1536Mi
+            cpu: 750m

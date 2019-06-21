@@ -31,3 +31,13 @@ services:
     ports:
     - 8088:8088
     command: -n monitoring port-forward svc/prom-operator-grafana 8088:80 --address=0.0.0.0
+
+  kibana:
+    image: bitnami/kubectl:1.14.3
+    environment:
+    - KUBECONFIG=/baremetal-k8s/credentials/kubeconfig
+    volumes:
+    - .:/baremetal-k8s
+    ports:
+    - 5601:5601
+    command: -n logging port-forward svc/efk-kibana 5601:443 --address=0.0.0.0
