@@ -2,7 +2,7 @@
 
 > ⚠️ This is a work in progress ⚠️
 
-![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-001.jpeg)
+![HP Thin Flexible Client t610 Home Data Center](/assets/hardware-002.jpeg)
 
 *Let's build a cheap home data center (based on x86-64) and run Kubernetes on it!*
 
