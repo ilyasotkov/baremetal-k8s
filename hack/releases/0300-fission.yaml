@@ -1,7 +1,5 @@
-bases:
-- _base.yaml
-
 releases:
+
 - name: task-pv-claim
   namespace: kube-system
   labels:

@@ -1,7 +1,7 @@
 helmDefaults:
   wait: true
   force: true
-  recreatePods: true
+  recreatePods: false
 
 repositories:
 - name: stable
@@ -12,3 +12,6 @@ repositories:
   url: https://charts.rook.io/release
 - name: fission
   url: https://fission.github.io/fission-charts
+
+helmfiles:
+- ./releases/*.yaml

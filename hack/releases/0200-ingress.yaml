@@ -1,7 +1,5 @@
-bases:
-- _base.yaml
-
 releases:
+
 - name: nginx-ingress
   namespace: kube-system
   labels:

@@ -1,6 +1,3 @@
-bases:
-- _base.yaml
-
 releases:
 
 - name: ceph-cluster
@@ -30,11 +27,7 @@ releases:
             databaseSizeMB: "1024"
             journalSizeMB: "1024"
           nodes:
-          - name: node00
-            location: rack=rack1
-            devices:
-            - name: sda
-          - name: node01
+          - name: 192.168.10.51
             location: rack=rack1
             devices:
             - name: sda
@@ -57,7 +50,9 @@ releases:
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
       metadata:
-         name: rook-ceph-block
+        name: rook-ceph-block
+        annotations:
+          storageclass.kubernetes.io/is-default-class: "true"
       provisioner: ceph.rook.io/block
       parameters:
         blockPool: replicapool

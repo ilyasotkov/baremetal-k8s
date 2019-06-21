@@ -30,4 +30,4 @@ services:
     - .:/baremetal-k8s
     ports:
     - 8088:8088
-    command: -n monitoring port-forward svc/prometheus-operator-grafana 8088:80 --address=0.0.0.0
+    command: -n monitoring port-forward svc/prom-operator-grafana 8088:80 --address=0.0.0.0
