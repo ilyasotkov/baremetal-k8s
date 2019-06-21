@@ -65,6 +65,7 @@ releases:
   labels:
     app: task-pv-claim
   chart: incubator/raw
+  version: 0.2.3
   installed: true
   wait: false
   values:

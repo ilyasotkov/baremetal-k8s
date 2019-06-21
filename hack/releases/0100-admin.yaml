@@ -7,7 +7,7 @@ releases:
     app: namespaces
     group: admin
   chart: incubator/raw
-  version: 0.1.0
+  version: 0.2.3
   values:
   - resources:
     - apiVersion: v1
