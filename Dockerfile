@@ -1,7 +1,5 @@
 FROM ubuntu:18.04
 
-WORKDIR /baremetal-k8s
-
 RUN apt update -yq \
         && apt install -yq \
                 libssl-dev \
@@ -17,20 +15,6 @@ RUN apt update -yq \
                 rsync \
                 unzip \
                 git
-
-COPY ansible/ ansible/
-
-ARG KUBESPRAY_VERSION=2.10.4
-RUN curl -L -o kubespray.tar.gz \
-        https://github.com/kubernetes-sigs/kubespray/archive/v${KUBESPRAY_VERSION}.tar.gz \
-        && tar -xvzf kubespray.tar.gz \
-        && mv kubespray-${KUBESPRAY_VERSION} /kubespray \
-        && rm -f kubespray.tar.gz \
-        && rm -f /kubespray/ansible.cfg \
-        && cp -r ansible/* /kubespray
-
-RUN /usr/bin/python -m pip install pip -U \
-        && python -m pip install -r /kubespray/requirements.txt
 
 ARG TERRAFORM_VERSION=0.12.0
 RUN curl -o ./terraform.zip \
@@ -57,6 +41,21 @@ RUN curl -L -o helmfile \
         https://github.com/roboll/helmfile/releases/download/v${HELMFILE_VERSION}/helmfile_linux_amd64 \
         && chmod 0700 helmfile \
         && mv helmfile /usr/bin
+
+WORKDIR /baremetal-k8s
+
+COPY ansible/ ansible/
+ARG KUBESPRAY_VERSION=2.10.4
+RUN curl -L -o kubespray.tar.gz \
+        https://github.com/kubernetes-sigs/kubespray/archive/v${KUBESPRAY_VERSION}.tar.gz \
+        && tar -xvzf kubespray.tar.gz \
+        && mv kubespray-${KUBESPRAY_VERSION} /kubespray \
+        && rm -f kubespray.tar.gz \
+        && rm -f /kubespray/ansible.cfg \
+        && cp -r ansible/* /kubespray/
+
+RUN /usr/bin/python -m pip install pip -U \
+        && python -m pip install --quiet -r /kubespray/requirements.txt
 
 COPY ./docker-entrypoint.sh /usr/bin/
 COPY . .
