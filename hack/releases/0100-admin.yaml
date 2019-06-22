@@ -56,6 +56,7 @@ releases:
         - 192.168.10.100-192.168.10.150
 
 - name: prom-operator
+  installed: true
   namespace: monitoring
   labels:
     app: prom-operator
@@ -65,9 +66,9 @@ releases:
   - fullnameOverride: prometheus-operator
 
 - name: kubernetes-dashboard
+  installed: true
   namespace: kube-system
   recreatePods: true
-  installed: true
   labels:
     app: kubernetes-dashboard
   chart: stable/kubernetes-dashboard
@@ -75,12 +76,12 @@ releases:
   values: []
 
 - name: rook-ceph
+  installed: true
   namespace: kube-system
   labels:
     app: rook-ceph
   chart: rook-release/rook-ceph
   recreatePods: true
-  installed: true
   values:
   - agent:
       flexVolumeDirPath: /var/lib/kubelet/volume-plugins

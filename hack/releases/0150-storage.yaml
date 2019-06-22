@@ -1,11 +1,11 @@
 releases:
 
 - name: ceph-cluster
+  installed: true
   namespace: kube-system
   labels:
     app: ceph-cluster
   chart: incubator/raw
-  installed: true
   values:
   - resources:
     - apiVersion: ceph.rook.io/v1
@@ -38,11 +38,11 @@ releases:
             - name: sda
 
 - name: ceph-block-storage
+  installed: true
   namespace: kube-system
   labels:
     app: ceph-block-storage
   chart: incubator/raw
-  installed: true
   values:
   - resources:
     - apiVersion: ceph.rook.io/v1
@@ -65,12 +65,12 @@ releases:
         clusterNamespace: kube-system
 
 - name: task-pv-claim
+  installed: false
   namespace: kube-system
   labels:
     app: task-pv-claim
   chart: incubator/raw
-  version: 0.2.3
-  installed: false
+  version: 0.2.3  
   wait: false
   values:
   - resources:
