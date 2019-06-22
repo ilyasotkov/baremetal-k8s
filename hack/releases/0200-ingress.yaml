@@ -31,3 +31,40 @@ releases:
           memory: 256Mi
       publishService:
         enabled: true
+
+- name: dns-server
+  installed: true
+  recreatePods: true
+  namespace: kube-system
+  labels:
+    app: dns-server
+  chart: stable/coredns
+  version: 1.5.3
+  values:
+  - replicaCount: 2
+    serviceType: LoadBalancer
+    isClusterService: false
+    servers:
+    - port: 53
+      plugins:
+      - name: errors
+      - name: health
+      - name: loadbalance
+        parameters: round_robin
+      - name: file
+        parameters: /etc/coredns/db.cluster.home cluster.home
+      - name: forward
+        parameters: . 8.8.8.8 8.8.4.4
+      - name: log
+      zones:
+      - zone: .
+        use_tcp: false
+        scheme: dns://
+    zoneFiles:
+    - filename: db.cluster.home
+      domain: cluster.home
+      contents: |
+        $TTL 1h
+        @          IN  SOA ns email 2019062210 60 30 180 30
+        @          IN  A 192.168.10.100
+        kibana     IN  A 192.168.10.100
