@@ -23,8 +23,7 @@ releases:
         name: openfaas-fn
 
 - name: openfaas
-  installed: true
-  wait: false
+  installed: false
   namespace: openfaas
   labels:
     app: openfaas
