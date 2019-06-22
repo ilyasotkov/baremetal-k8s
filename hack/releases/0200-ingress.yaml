@@ -1,3 +1,6 @@
+bases:
+- ../defaults.yaml
+
 releases:
 
 - name: nginx-ingress

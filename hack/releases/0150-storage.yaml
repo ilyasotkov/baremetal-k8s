@@ -1,3 +1,6 @@
+bases:
+- ../defaults.yaml
+
 releases:
 
 - name: ceph-cluster
@@ -70,7 +73,7 @@ releases:
   labels:
     app: task-pv-claim
   chart: incubator/raw
-  version: 0.2.3  
+  version: 0.2.3
   wait: false
   values:
   - resources:
