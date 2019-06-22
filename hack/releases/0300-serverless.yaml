@@ -1,0 +1,49 @@
+bases:
+- ../defaults.yaml
+
+releases:
+
+- name: openfaas-ns
+  installed: true
+  namespace: kube-system
+  labels:
+    app: openfaas-ns
+    group: serverless
+  chart: incubator/raw
+  version: 0.2.3
+  values:
+  - resources:
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: openfaas
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: openfaas-fn
+
+- name: openfaas
+  installed: true
+  wait: false
+  namespace: openfaas
+  labels:
+    app: openfaas
+    group: serverless
+  chart: openfaas/openfaas
+  values:
+  - kubernetesDNSDomain: baremetal-k8s
+    functionNamespace: openfaas-fn
+    exposeServices: false
+    serviceType: ClusterIP
+    basic_auth: true
+    operator:
+      create: true
+    ingress:
+      enabled: true
+      hosts:
+      - host: openfaas.cluster.home
+        serviceName: gateway
+        servicePort: 8080
+        path: /
+      annotations:
+        kubernetes.io/ingress.class: nginx

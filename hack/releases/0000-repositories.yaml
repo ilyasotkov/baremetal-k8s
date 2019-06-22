@@ -9,3 +9,5 @@ repositories:
   url: https://fission.github.io/fission-charts
 - name: akomljen-charts
   url: https://raw.githubusercontent.com/komljen/helm-charts/master/charts/
+- name: openfaas
+  url: https://openfaas.github.io/faas-netes/
