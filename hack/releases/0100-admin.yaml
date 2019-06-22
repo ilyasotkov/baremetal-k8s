@@ -98,3 +98,4 @@ releases:
         memory: 256Mi
     rbacEnable: true
     pspEnable: true
+    logLevel: WARNING
