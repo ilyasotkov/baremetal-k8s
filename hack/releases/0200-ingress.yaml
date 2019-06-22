@@ -68,6 +68,6 @@ releases:
       domain: cluster.home
       contents: |
         $TTL 1h
-        @          IN  SOA ns email 2019062210 60 30 180 30
-        @          IN  A 192.168.10.100
-        kibana     IN  A 192.168.10.100
+        @                 IN  SOA ns email 2019062210 60 30 180 30
+        @                 IN  A 192.168.10.100
+        *.cluster.home.   IN  A 192.168.10.100
