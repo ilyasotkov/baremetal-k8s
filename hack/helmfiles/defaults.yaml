@@ -1,4 +1,4 @@
 helmDefaults:
   wait: true
   force: true
-  recreatePods: true
+  recreatePods: false

@@ -1,5 +1,5 @@
 bases:
-- ../defaults.yaml
+- ./defaults.yaml
 
 releases:
 
