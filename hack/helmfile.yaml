@@ -1,2 +1,7 @@
 helmfiles:
-- ./releases/*.yaml
+- path: ./helmfiles/repositories.yaml
+- path: ./helmfiles/admin.yaml
+- path: ./helmfiles/storage.yaml
+- path: ./helmfiles/logging.yaml
+- path: ./helmfiles/serverless.yaml
+- path: ./helmfiles/dataplatform.yaml

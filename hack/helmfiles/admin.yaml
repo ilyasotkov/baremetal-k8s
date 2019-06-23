@@ -17,14 +17,6 @@ releases:
       kind: Namespace
       metadata:
         name: monitoring
-    - apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: fission
-    - apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: logging
 
 - name: metrics-server
   installed: true
@@ -71,7 +63,10 @@ releases:
 - name: kubernetes-dashboard
   installed: true
   namespace: kube-system
-  recreatePods: true
+  hooks:
+  - events: ["presync"]
+    command: kubectl
+    args: ["apply", "-f", "../raw/admin-user.yaml"]
   labels:
     app: kubernetes-dashboard
   chart: stable/kubernetes-dashboard

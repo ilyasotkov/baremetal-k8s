@@ -18,7 +18,14 @@ releases:
     app: efk
   chart: akomljen-charts/efk
   values:
-  - elasticsearch:
+  - kibana:
+      ingress:
+        enabled: true
+        hosts:
+        - kibana.cluster.home
+        annotations:
+          kubernetes.io/ingress.class: nginx
+    elasticsearch:
       spec:
         client-java-options: -Xms128m -Xmx128m
         master-java-options: -Xms512m -Xmx512m
