@@ -1,0 +1,4 @@
+apiVersion: v1
+description: RailsGoat is a deliberately vulnerable Ruby on Rails application
+name: railsgoat
+version: 0.1.0

@@ -1,0 +1,95 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "railsgoat.fullname" . }}
+  labels:
+    app: {{ template "railsgoat.fullname" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ template "railsgoat.fullname" . }}
+        release: {{ .Release.Name }}
+    spec:
+      {{- if .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecret}}
+      {{- end }}
+      containers:
+        - name: {{ template "railsgoat.fullname" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ default "" .Values.image.pullPolicy }}
+          env:
+            - name: PORT
+              value: "3000"
+            - name: RAILS_ENV
+              value: production
+            - name: RAILS_SERVE_STATIC_FILES
+              value: "yes"
+            - name: RAILS_LOG_TO_STDOUT
+              value: "yes"
+            {{- if index .Values "gcloud-sqlproxy" "enabled" }}
+            - name: POSTGRES_HOST
+              value: {{ template "railsgoat.gcloud-sqlproxy.fullname" . }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: db-username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: db-password
+            {{- end }}
+            {{- if .Values.postgresql.persistence.enabled }}
+            - name: POSTGRES_HOST
+              value: {{ template "railsgoat.postgresql.fullname" . }}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "railsgoat.fullname" . }}
+                  key: db-username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "railsgoat.fullname" . }}
+                  key: db-password
+            {{- end }}
+            - name: KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "railsgoat.fullname" . }}
+                  key: encryption-key
+          ports:
+            - containerPort: {{ .Values.servicePort | int }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.servicePort | int }}
+            initialDelaySeconds: 300
+            timeoutSeconds: 5
+            failureThreshold: 6
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ .Values.servicePort | int }}
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 5
+          workingDir: /myapp
+          command: ["bash", "-c"]
+          args:
+          - |
+            rails db:setup || rails db:migrate && bundle exec puma -C config/puma.rb
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
