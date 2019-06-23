@@ -1,5 +1,7 @@
 .hidden/
 .terraformrc
 .terraform/
-credentials/
 .helm/
+/credentials/
+/charts/
+**/charts/*.tgz
