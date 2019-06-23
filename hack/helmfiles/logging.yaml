@@ -4,7 +4,7 @@ bases:
 releases:
 
 - name: es-operator
-  installed: true
+  installed: false
   namespace: logging
   labels:
     app: es-operator
@@ -12,7 +12,7 @@ releases:
   values: []
 
 - name: efk
-  installed: true
+  installed: false
   namespace: logging
   labels:
     app: efk
