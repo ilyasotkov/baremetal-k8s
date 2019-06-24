@@ -4,7 +4,7 @@ set -eux
 cd $(dirname $0)/..
 
 cd ./hack
-flags=""
+flags="--quiet"
 
 if [ $1 == all ]; then
     helmfile $flags --file helmfile.yaml sync --concurrency=1
