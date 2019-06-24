@@ -4,7 +4,8 @@ bases:
 releases:
 
 - name: railsgoat
-  installed: true
+  installed: false
+  namespace: dataplatform
   wait: true
   timeout: 600
   recreatePods: true
@@ -40,16 +41,48 @@ releases:
         enabled: true
         size: 4Gi
 
+- name: presto
+  installed: true
+  namespace: dataplatform
+  labels:
+    app: presto
+    group: dataplatform
+  chart: ../charts/presto
+  version: 0.1.1
+  values:
+  - kubernetesDNSDomain: baremetal-k8s
+    server:
+      workers: 1
+      node:
+        environment: production
+        dataDir: /presto/etc/data
+    config:
+      path: /etc/presto
+      http:
+        port: 8080
+      query:
+        maxMemory: 2GB
+        maxMemoryPerNode: 2GB
+    jvm:
+      maxHeapSize: 1G
+      gcMethod:
+        type: UseG1GC
+        g1:
+          heapRegionSize: 32M
+
 - name: wordpress
   installed: false
   namespace: dataplatform
+  timeout: 500
   labels:
     app: wordpress
     group: dataplatform
   chart: stable/wordpress
   version: 5.12.4
   values:
-  - mariadb:
+  - updateStrategy:
+      type: Recreate
+    mariadb:
       image:
         debug: true
       master:
@@ -57,27 +90,40 @@ releases:
           initialDelaySeconds: 300
           failureThreshold: 30
         persistence:
-          size: 2Gi
+          size: 30Gi
+    livenessProbe:
+      initialDelaySeconds: 600
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
+    readinessProbe:
+      initialDelaySeconds: 300
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 6
+      successThreshold: 1
     service:
       type: ClusterIP
     persistence:
       enabled: true
-      size: 3Gi
+      size: 20Gi
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: nginx
       hosts:
-      - name: suitecrm.cluster.home
+      - name: wp.cluster.home
 
 - name: suitecrm
-  installed: false
-  wait: false
+  installed: true
+  wait: true
   namespace: dataplatform
+  timeout: 600
   labels:
     app: suitecrm
     group: dataplatform
-  chart: ../../charts/stable/suitecrm
+  chart: ../charts/suitecrm
   version: 5.4.4
   values:
   - image:
@@ -90,68 +136,15 @@ releases:
           initialDelaySeconds: 300
           failureThreshold: 30
         persistence:
-          size: 2Gi
+          size: 25Gi
     service:
       type: ClusterIP
     persistence:
       enabled: true
-      size: 3Gi
+      size: 25Gi
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: nginx
       hosts:
       - name: suitecrm.cluster.home
-
-- name: odoo
-  installed: false
-  timeout: 900
-  namespace: dataplatform
-  labels:
-    app: odoo
-    group: dataplatform
-  chart: ../odoo
-  version: 8.1.3
-  values:
-  - postgresql:
-      persistence:
-        size: 1Gi
-      enabled: true
-      size: 2Gi
-      livenessProbe:
-        initialDelaySeconds: 120
-    service:
-      type: ClusterIP
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: nginx
-      hosts:
-      - name: odoo.cluster.home
-
-- name: presto
-  installed: false
-  namespace: dataplatform
-  labels:
-    app: presto
-    group: dataplatform
-  chart: stable/presto
-  version: 0.1.1
-  values:
-  - server:
-      workers: 1
-      node:
-        environment: production
-        dataDir: /presto/etc/data
-      log:
-        presto:
-          level: INFO
-        query:
-          maxMemory: 256M
-          maxMemoryPerNode: 256M
-      jvm:
-        maxHeapSize: 512M
-        gcMethod:
-          type: UseG1GC
-          g1:
-            heapRegionSize: 32M
