@@ -72,29 +72,3 @@ releases:
   chart: stable/kubernetes-dashboard
   version: 1.5.2
   values: []
-
-- name: rook-ceph
-  installed: true
-  namespace: kube-system
-  labels:
-    app: rook-ceph
-  chart: rook-release/rook-ceph
-  recreatePods: true
-  values:
-  - agent:
-      flexVolumeDirPath: /var/lib/kubelet/volume-plugins
-    image:
-      prefix: rook
-      repository: rook/ceph
-      tag: master
-      pullPolicy: IfNotPresent
-    resources:
-      requests:
-        cpu: 50m
-        memory: 128Mi
-      limits:
-        cpu: 200m
-        memory: 256Mi
-    rbacEnable: true
-    pspEnable: true
-    logLevel: WARNING

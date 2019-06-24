@@ -3,25 +3,51 @@ bases:
 
 releases:
 
-- name: ceph-cluster
+- name: rook-ceph-operator
   installed: true
-  namespace: kube-system
+  namespace: rook-ceph
   labels:
-    app: ceph-cluster
+    app: rook-ceph-operator
+  chart: rook-release/rook-ceph
+  values:
+  - agent:
+      flexVolumeDirPath: /var/lib/kubelet/volume-plugins
+    image:
+      prefix: rook
+      repository: rook/ceph
+      tag: master
+      pullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    rbacEnable: true
+    pspEnable: true
+    logLevel: WARNING
+
+- name: rook-ceph-cluster
+  installed: true
+  recreatePods: true
+  namespace: rook-ceph
+  labels:
+    app: rook-ceph-cluster
   chart: incubator/raw
   values:
   - resources:
     - apiVersion: ceph.rook.io/v1
       kind: CephCluster
       metadata:
-        name: ceph-cluster
+        name: rook-ceph
       spec:
         cephVersion:
           image: ceph/ceph:v13.2.6-20190604
         dataDirHostPath: /var/lib/rook
         mon:
-          count: 1
-          allowMultiplePerNode: false
+          count: 3
+          allowMultiplePerNode: true
         dashboard:
           enabled: false
         storage:
@@ -31,20 +57,25 @@ releases:
             databaseSizeMB: "1024"
             journalSizeMB: "1024"
           nodes:
-          - name: master-node
-            location: rack=rack1
-            devices:
-            - name: sda
           - name: node01
             location: rack=rack1
             devices:
-            - name: sda
+            # - name: sda
+            - name: sdc
+          # - name: master-node
+          #   location: rack=rack1
+          #   devices:
+          #   - name: sda
+          # - name: node00
+          #   location: rack=rack1
+          #   devices:
+          #   - name: sda
 
-- name: ceph-block-storage
+- name: rook-ceph-storage
   installed: true
-  namespace: kube-system
+  namespace: rook-ceph
   labels:
-    app: ceph-block-storage
+    app: rook-ceph-storage
   chart: incubator/raw
   values:
   - resources:
@@ -59,19 +90,19 @@ releases:
     - apiVersion: storage.k8s.io/v1
       kind: StorageClass
       metadata:
-        name: rook-ceph-block
+        name: gp
         annotations:
           storageclass.kubernetes.io/is-default-class: "true"
       provisioner: ceph.rook.io/block
       parameters:
         blockPool: replicapool
-        clusterNamespace: kube-system
+        clusterNamespace: rook-ceph
 
-- name: task-pv-claim
+- name: rook-ceph-test
   installed: false
-  namespace: kube-system
+  namespace: rook-ceph
   labels:
-    app: task-pv-claim
+    app: rook-ceph-test
   chart: incubator/raw
   version: 0.2.3
   wait: false
@@ -80,11 +111,11 @@ releases:
     - kind: PersistentVolumeClaim
       apiVersion: v1
       metadata:
-        name: task-pv-claim
+        name: rook-ceph-test-lg
       spec:
-        storageClassName: rook-ceph-block
+        storageClassName: gp
         accessModes:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 5Gi
+            storage: 100Gi
